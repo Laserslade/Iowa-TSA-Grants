@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Iowa TSA Grant Marketplace</title>
+<title>Iowa TSA Opportunity Database</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -37,19 +37,97 @@
   img{max-width:100%;display:block;}
 
   .wrap{max-width:1180px;margin:0 auto;padding:0 24px;}
+  .view.hidden{display:none;}
 
-  /* Site header */
+  /* Site header (global, persists across views) */
   .site-header{
     border-bottom:1px solid var(--line);
     padding:18px 0;
   }
   .site-header .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
-  .wordmark{font-size:1.05rem;font-weight:700;color:var(--tsa-navy);letter-spacing:0.01em;}
+  .wordmark{font-size:1.05rem;font-weight:700;color:var(--tsa-navy);letter-spacing:0.01em;text-decoration:none;}
   .wordmark span{color:var(--tsa-red);}
   .site-header .tag{font-size:0.88rem;color:#5b5f6b;}
 
-  /* Hero */
-  .hero{padding:56px 0 40px;border-bottom:1px solid var(--line);}
+  /* Sub-nav shown on the Grants and Scholarships views only */
+  .subnav{border-bottom:1px solid var(--line);background:var(--paper-muted);padding:11px 0;}
+  .subnav .wrap{display:flex;align-items:center;gap:8px;font-size:0.85rem;color:#5b5f6b;}
+  .subnav a{color:var(--tsa-navy);text-decoration:none;font-weight:600;}
+  .subnav a:hover{text-decoration:underline;}
+  .subnav .crumb-sep{color:#a3a6ac;}
+  .subnav .crumb-current{color:#3c404a;}
+
+  /* Homepage: one centered block sized to the viewport, no divider,
+     no scrolling needed on a typical screen. */
+  .home-hero{
+    min-height:calc(100vh - 90px);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:32px 0;
+  }
+  .home-hero-inner{
+    max-width:900px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .home-hero h1{
+    font-size:clamp(1.7rem, 3vw, 2.3rem);
+    font-weight:700;
+    line-height:1.16;
+    color:var(--ink);
+    margin-bottom:14px;
+  }
+  .home-hero p{
+    font-size:1rem;
+    color:#3c404a;
+    max-width:620px;
+    margin:0 auto 30px;
+  }
+
+  /* Homepage hook cards */
+  .hook-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;text-align:left;}
+  .hook-card{
+    display:block;
+    text-decoration:none;
+    color:inherit;
+    border:1px solid var(--line);
+    border-left:4px solid var(--tsa-navy);
+    background:var(--paper);
+    padding:22px 24px;
+    transition:box-shadow 0.15s ease, transform 0.15s ease;
+  }
+  .hook-card:hover{box-shadow:0 10px 28px rgba(16,18,20,0.10);transform:translateY(-2px);}
+  .hook-card h2{font-size:1.25rem;margin-bottom:5px;color:var(--ink);}
+  .hook-card .hook-desc{font-size:0.9rem;color:#5b5f6b;margin-bottom:16px;}
+  .hook-stat-row{
+    display:flex;
+    border-top:2px solid var(--ink);
+    border-bottom:2px solid var(--ink);
+    padding:12px 0;
+    margin-bottom:16px;
+  }
+  .hook-stat{flex:1;padding:0 14px;}
+  .hook-stat:first-child{padding-left:0;}
+  .hook-stat + .hook-stat{border-left:1px solid var(--line);}
+  .hook-stat .num{
+    font-family:"Space Grotesk", sans-serif;
+    font-weight:700;
+    font-size:1.5rem;
+    color:var(--tsa-red);
+    line-height:1;
+  }
+  .hook-stat .label{margin-top:4px;font-size:0.76rem;color:#4a4e58;}
+  .hook-cta{font-size:0.88rem;font-weight:600;color:var(--tsa-red);}
+  .hook-cta .arrow{margin-left:3px;}
+
+  @media (max-width:760px){
+    .home-hero{min-height:0;padding:28px 0;}
+    .hook-grid{grid-template-columns:1fr;}
+  }
+
+  /* Hero (Grants and Scholarships views) */
+  .hero{padding:48px 0 40px;border-bottom:1px solid var(--line);}
   .hero .wrap{display:grid;grid-template-columns:1.15fr 0.85fr;gap:48px;align-items:center;}
   .hero h1{
     font-size:clamp(2.1rem, 3.6vw, 3.05rem);
@@ -58,12 +136,8 @@
     color:var(--ink);
     max-width:16ch;
   }
-  .hero h1 .brand{
-    color:var(--tsa-navy);
-  }
-  .hero h1 .brand .red{
-    color:var(--tsa-red);
-  }
+  .hero h1 .brand{color:var(--tsa-navy);}
+  .hero h1 .brand .red{color:var(--tsa-red);}
   .hero p.lede{
     margin-top:18px;
     font-size:1.08rem;
@@ -95,28 +169,22 @@
     color:#4a4e58;
   }
   .hero-figure{
-  border:none;
-  background:#fff;
-  padding:0;
-  margin:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  width:100%;
-  height:100%;
-}
-.hero-figure img{
-  width:100%;
-  height:100%;
-  object-fit:contain;
-}
-.hero-figure figcaption{
-  display:none;
-}
-.hero-figure-inner{
-  width:100%;
-  height:100%;
-}
+    border:none;
+    background:#fff;
+    padding:0;
+    margin:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    width:100%;
+    max-height:320px;
+  }
+  .hero-figure img{
+    width:100%;
+    max-height:320px;
+    object-fit:contain;
+  }
+  .hero-figure-inner{width:100%;}
 
   /* Filter bar: compact horizontal menu with click-to-open dropdowns.
      Fixed height so opening/closing a dropdown or updating the results
@@ -314,9 +382,11 @@
     color:#6a6e79;
   }
 
-  @media (max-width: 900px){
+  @media (max-width: 700px){
     .hero .wrap{grid-template-columns:1fr;}
-    .hero-figure{order:-1;}
+    .hero-figure{max-height:180px;}
+  }
+  @media (max-width: 900px){
     .grid{grid-template-columns:repeat(2, 1fr);}
   }
   @media (max-width: 620px){
@@ -337,141 +407,347 @@
 
 <header class="site-header">
   <div class="wrap">
-    <div class="wordmark">Iowa TSA <span>Grant Marketplace</span></div>
-    <div class="tag">A funding guide built for Iowa TSA advisors</div>
+    <a class="wordmark" href="#/">Iowa TSA <span>Opportunity Database</span></a>
+    <div class="tag">A resource hub for Iowa TSA advisors and students</div>
   </div>
 </header>
 
-<section class="hero">
-  <div class="wrap">
-    <div class="hero-copy">
-      <h1>Grant funding for your <span class="brand">Iowa <span class="red">TSA</span></span> chapter, already researched.</h1>
-      <p class="lede">Every grant on this page has been checked for whether it's currently active, who's actually eligible, and what a real Iowa TSA chapter would need to apply. No dead links, no discontinued programs.</p>
-      <div class="stat-strip">
-        <div class="stat">
-          <div class="num">30+</div>
-          <div class="label">verified funding opportunities for Iowa TSA chapters</div>
-        </div>
-        <div class="stat">
-          <div class="num">$5M+</div>
-          <div class="label">in STEM and education grant dollars represented</div>
-        </div>
+<!-- ======================= HOME VIEW ======================= -->
+<div class="view" id="view-home">
+
+  <section class="home-hero">
+    <div class="wrap home-hero-inner">
+      <h1>One place to find what's already out there for Iowa TSA.</h1>
+      <p>This database exists to help Iowa TSA students and chapters discover funding and support connected to what they're already doing, not to tell anyone what path to take. Every listing here has been checked for whether it's currently active and who's actually eligible. It starts with two resources below, with more on the way.</p>
+      <div class="hook-grid">
+        <a class="hook-card" href="#/grants">
+          <h2>Grants</h2>
+          <div class="hook-desc">Funding for chapters, classrooms, and school districts.</div>
+          <div class="hook-stat-row">
+            <div class="hook-stat">
+              <div class="num">30+</div>
+              <div class="label">verified funding opportunities</div>
+            </div>
+            <div class="hook-stat">
+              <div class="num">$5M+</div>
+              <div class="label">in STEM and education grant dollars represented</div>
+            </div>
+          </div>
+          <div class="hook-cta">Browse grants <span class="arrow">&rarr;</span></div>
+        </a>
+        <a class="hook-card" href="#/scholarships">
+          <h2>Scholarships</h2>
+          <div class="hook-desc">Awards for individual Iowa TSA students pursuing STEM.</div>
+          <div class="hook-stat-row">
+            <div class="hook-stat">
+              <div class="num">Nearly 40</div>
+              <div class="label">verified scholarships</div>
+            </div>
+            <div class="hook-stat">
+              <div class="num">$75,000+</div>
+              <div class="label">for Iowa TSA students pursuing STEM, plus national programs</div>
+            </div>
+          </div>
+          <div class="hook-cta">Browse scholarships <span class="arrow">&rarr;</span></div>
+        </a>
       </div>
     </div>
-    <figure class="hero-figure">
-  <div class="hero-figure-inner">
-    <img src="https://images.squarespace-cdn.com/content/v1/5351cb61e4b06285ac5bdea4/1397884251665-TAYGNONUJEJH18SSGJY9/image-asset.jpeg?format=1500w" alt="Iowa Technology Student Association logo">
-  </div>
-</figure>
-  </div>
-</section>
+  </section>
 
-<nav class="filter-bar" id="filterBar">
-  <div class="wrap filter-menu" id="filterMenu">
-    <div class="menu-item" data-group="tier">
-      <button class="menu-trigger" type="button">Tier <span class="count">0</span><span class="chev">&#9662;</span></button>
-      <div class="dropdown-panel">
-        <div class="dropdown-row" data-group="tier">
-          <button class="pill" data-value="1">Tier 1: Small and actionable</button>
-          <button class="pill" data-value="2">Tier 2: Iowa STEM and regional</button>
-          <button class="pill" data-value="3">Tier 3: National and corporate</button>
+</div>
+
+<!-- ======================= GRANTS VIEW ======================= -->
+<div class="view hidden" id="view-grants">
+
+  <nav class="subnav">
+    <div class="wrap">
+      <a href="#/">Iowa TSA Opportunity Database</a>
+      <span class="crumb-sep">/</span>
+      <span class="crumb-current">Grants</span>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <h1>Grant funding for your <span class="brand">Iowa <span class="red">TSA</span></span> chapter, already researched.</h1>
+        <p class="lede">Every grant on this page has been checked for whether it's currently active, who's actually eligible, and what a real Iowa TSA chapter would need to apply. No dead links, no discontinued programs.</p>
+        <div class="stat-strip">
+          <div class="stat">
+            <div class="num">30+</div>
+            <div class="label">verified funding opportunities for Iowa TSA chapters</div>
+          </div>
+          <div class="stat">
+            <div class="num">$5M+</div>
+            <div class="label">in STEM and education grant dollars represented</div>
+          </div>
         </div>
       </div>
+      <figure class="hero-figure">
+        <div class="hero-figure-inner">
+          <img src="https://images.squarespace-cdn.com/content/v1/5351cb61e4b06285ac5bdea4/1397884251665-TAYGNONUJEJH18SSGJY9/image-asset.jpeg?format=1500w" alt="Iowa Technology Student Association logo">
+        </div>
+      </figure>
     </div>
+  </section>
 
-    <div class="menu-item" data-group="amount">
-      <button class="menu-trigger" type="button">Amount <span class="count">0</span><span class="chev">&#9662;</span></button>
-      <div class="dropdown-panel">
-        <div class="dropdown-row" data-group="amount">
-          <button class="pill" data-value="under500">Under $500</button>
-          <button class="pill" data-value="500-1k">$500 to $1K</button>
-          <button class="pill" data-value="1k-5k">$1K to $5K</button>
-          <button class="pill" data-value="5k-25k">$5K to $25K</button>
-          <button class="pill" data-value="25k-plus">$25K or more</button>
-          <button class="pill" data-value="varies">Varies, undisclosed</button>
+  <nav class="filter-bar" id="filterBarGrants">
+    <div class="wrap filter-menu" id="filterMenuGrants">
+      <div class="menu-item" data-group="tier">
+        <button class="menu-trigger" type="button">Tier <span class="count">0</span><span class="chev">&#9662;</span></button>
+        <div class="dropdown-panel">
+          <div class="dropdown-row" data-group="tier">
+            <button class="pill" data-value="1">Tier 1: Small and actionable</button>
+            <button class="pill" data-value="2">Tier 2: Iowa STEM and regional</button>
+            <button class="pill" data-value="3">Tier 3: National and corporate</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="menu-item" data-group="geo">
-      <button class="menu-trigger" type="button">Geography <span class="count">0</span><span class="chev">&#9662;</span></button>
-      <div class="dropdown-panel">
-        <div class="dropdown-row" data-group="geo">
-          <button class="pill" data-value="iowa-statewide">Iowa statewide</button>
-          <button class="pill" data-value="national">National</button>
-          <button class="pill" data-value="polk-county">Polk County</button>
-          <button class="pill" data-value="dallas-county">Dallas County</button>
-          <button class="pill" data-value="boone-county">Boone County</button>
-          <button class="pill" data-value="guthrie-county">Guthrie County</button>
-          <button class="pill" data-value="story-county">Story County</button>
-          <button class="pill" data-value="pottawattamie-county">Pottawattamie County</button>
-          <button class="pill" data-value="johnson-county">Johnson County</button>
-          <button class="pill" data-value="linn-county">Linn County</button>
-          <button class="pill" data-value="clinton-county">Clinton County</button>
-          <button class="pill" data-value="scott-county">Scott County</button>
-          <button class="pill" data-value="des-moines-county">Des Moines County</button>
-          <button class="pill" data-value="dubuque-region">Dubuque region</button>
-          <button class="pill" data-value="siouxland">Siouxland</button>
-          <button class="pill" data-value="eastern-iowa">Eastern Iowa</button>
-          <button class="pill" data-value="midamerican-territory">MidAmerican territory</button>
-          <button class="pill" data-value="alliant-territory">Alliant territory</button>
+      <div class="menu-item" data-group="amount">
+        <button class="menu-trigger" type="button">Amount <span class="count">0</span><span class="chev">&#9662;</span></button>
+        <div class="dropdown-panel">
+          <div class="dropdown-row" data-group="amount">
+            <button class="pill" data-value="under500">Under $500</button>
+            <button class="pill" data-value="500-1k">$500 to $1K</button>
+            <button class="pill" data-value="1k-5k">$1K to $5K</button>
+            <button class="pill" data-value="5k-25k">$5K to $25K</button>
+            <button class="pill" data-value="25k-plus">$25K or more</button>
+            <button class="pill" data-value="varies">Varies, undisclosed</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="menu-item" data-group="applicant">
-      <button class="menu-trigger" type="button">Applicant <span class="count">0</span><span class="chev">&#9662;</span></button>
-      <div class="dropdown-panel">
-        <div class="dropdown-row" data-group="applicant">
-          <button class="pill" data-value="chapter-advisor">Chapter, via advisor</button>
-          <button class="pill" data-value="teacher-direct">Teacher, direct</button>
-          <button class="pill" data-value="school-district">School or district</button>
-          <button class="pill" data-value="nonprofit-sponsor">Nonprofit or fiscal sponsor</button>
+      <div class="menu-item" data-group="geo">
+        <button class="menu-trigger" type="button">Geography <span class="count">0</span><span class="chev">&#9662;</span></button>
+        <div class="dropdown-panel">
+          <div class="dropdown-row" data-group="geo">
+            <button class="pill" data-value="iowa-statewide">Iowa statewide</button>
+            <button class="pill" data-value="national">National</button>
+            <button class="pill" data-value="polk-county">Polk County</button>
+            <button class="pill" data-value="dallas-county">Dallas County</button>
+            <button class="pill" data-value="boone-county">Boone County</button>
+            <button class="pill" data-value="guthrie-county">Guthrie County</button>
+            <button class="pill" data-value="story-county">Story County</button>
+            <button class="pill" data-value="pottawattamie-county">Pottawattamie County</button>
+            <button class="pill" data-value="johnson-county">Johnson County</button>
+            <button class="pill" data-value="linn-county">Linn County</button>
+            <button class="pill" data-value="clinton-county">Clinton County</button>
+            <button class="pill" data-value="scott-county">Scott County</button>
+            <button class="pill" data-value="des-moines-county">Des Moines County</button>
+            <button class="pill" data-value="dubuque-region">Dubuque region</button>
+            <button class="pill" data-value="siouxland">Siouxland</button>
+            <button class="pill" data-value="eastern-iowa">Eastern Iowa</button>
+            <button class="pill" data-value="midamerican-territory">MidAmerican territory</button>
+            <button class="pill" data-value="alliant-territory">Alliant territory</button>
+          </div>
         </div>
       </div>
-    </div>
 
-    <div class="menu-item" data-group="type">
-      <button class="menu-trigger" type="button">Type <span class="count">0</span><span class="chev">&#9662;</span></button>
-      <div class="dropdown-panel">
-        <div class="dropdown-row" data-group="type">
-          <button class="pill" data-value="cash">Cash grant</button>
-          <button class="pill" data-value="in-kind">In-kind program</button>
-          <button class="pill" data-value="award">Award or recognition</button>
-          <button class="pill" data-value="competition">Competition prize</button>
+      <div class="menu-item" data-group="applicant">
+        <button class="menu-trigger" type="button">Applicant <span class="count">0</span><span class="chev">&#9662;</span></button>
+        <div class="dropdown-panel">
+          <div class="dropdown-row" data-group="applicant">
+            <button class="pill" data-value="chapter-advisor">Chapter, via advisor</button>
+            <button class="pill" data-value="teacher-direct">Teacher, direct</button>
+            <button class="pill" data-value="school-district">School or district</button>
+            <button class="pill" data-value="nonprofit-sponsor">Nonprofit or fiscal sponsor</button>
+          </div>
         </div>
       </div>
+
+      <div class="menu-item" data-group="type">
+        <button class="menu-trigger" type="button">Type <span class="count">0</span><span class="chev">&#9662;</span></button>
+        <div class="dropdown-panel">
+          <div class="dropdown-row" data-group="type">
+            <button class="pill" data-value="cash">Cash grant</button>
+            <button class="pill" data-value="in-kind">In-kind program</button>
+            <button class="pill" data-value="award">Award or recognition</button>
+            <button class="pill" data-value="competition">Competition prize</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="clear-btn" id="clearFiltersGrants" type="button">Clear all filters</button>
+      <div class="results-note" id="resultsNoteGrants"></div>
     </div>
+  </nav>
 
-    <button class="clear-btn" id="clearFilters" type="button">Clear all filters</button>
-    <div class="results-note" id="resultsNote"></div>
-  </div>
-</nav>
+  <main class="catalog">
+    <div class="wrap">
 
-<main class="catalog">
-  <div class="wrap">
+      <h2 class="tier-heading">Tier 1 <span class="tsub">Small and highly actionable</span></h2>
+      <div class="grid" id="grantsTier1"></div>
 
-    <h2 class="tier-heading">Tier 1 <span class="tsub">Small and highly actionable</span></h2>
-    <div class="grid" id="tier1"></div>
+      <h2 class="tier-heading">Tier 2 <span class="tsub">Iowa STEM, regional, and state programs</span></h2>
+      <div class="grid" id="grantsTier2"></div>
 
-    <h2 class="tier-heading">Tier 2 <span class="tsub">Iowa STEM, regional, and state programs</span></h2>
-    <div class="grid" id="tier2"></div>
+      <h2 class="tier-heading">Tier 3 <span class="tsub">Large national and corporate programs</span></h2>
+      <div class="grid" id="grantsTier3"></div>
 
-    <h2 class="tier-heading">Tier 3 <span class="tsub">Large national and corporate programs</span></h2>
-    <div class="grid" id="tier3"></div>
+      <div class="empty-note" id="emptyNoteGrants">No grants match the filters you've selected. Try clearing a filter or two.</div>
 
-    <div class="empty-note" id="emptyNote">No grants match the filters you've selected. Try clearing a filter or two.</div>
+    </div>
+  </main>
 
-  </div>
-</main>
+</div>
+
+<!-- ==================== SCHOLARSHIPS VIEW ==================== -->
+<div class="view hidden" id="view-scholarships">
+
+  <nav class="subnav">
+    <div class="wrap">
+      <a href="#/">Iowa TSA Opportunity Database</a>
+      <span class="crumb-sep">/</span>
+      <span class="crumb-current">Scholarships</span>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <h1>Scholarship dollars for your <span class="brand">Iowa <span class="red">TSA</span></span> student, already researched.</h1>
+        <p class="lede">Every scholarship on this page has been checked for whether it's currently open, who's actually eligible, and what a real Iowa TSA student would need to apply. Iowa-specific programs sit alongside national ones any TSA student can enter.</p>
+        <div class="stat-strip">
+          <div class="stat">
+            <div class="num">Nearly 40</div>
+            <div class="label">verified scholarships for Iowa TSA students</div>
+          </div>
+          <div class="stat">
+            <div class="num">$75,000+</div>
+            <div class="label">in scholarship dollars represented, plus a $6.6M full-ride pipeline program</div>
+          </div>
+        </div>
+      </div>
+      <figure class="hero-figure">
+        <div class="hero-figure-inner">
+          <img src="https://images.squarespace-cdn.com/content/v1/5351cb61e4b06285ac5bdea4/1397884251665-TAYGNONUJEJH18SSGJY9/image-asset.jpeg?format=1500w" alt="Iowa Technology Student Association logo">
+        </div>
+      </figure>
+    </div>
+  </section>
+
+  <nav class="filter-bar" id="filterBarSch">
+    <div class="wrap filter-menu" id="filterMenuSch">
+      <div class="menu-item" data-group="tier">
+        <button class="menu-trigger" type="button">Tier <span class="count">0</span><span class="chev">&#9662;</span></button>
+        <div class="dropdown-panel">
+          <div class="dropdown-row" data-group="tier">
+            <button class="pill" data-value="1">Tier 1: County and local</button>
+            <button class="pill" data-value="2">Tier 2: Iowa statewide and university</button>
+            <button class="pill" data-value="3">Tier 3: National and TSA</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-item" data-group="amount">
+        <button class="menu-trigger" type="button">Amount <span class="count">0</span><span class="chev">&#9662;</span></button>
+        <div class="dropdown-panel">
+          <div class="dropdown-row" data-group="amount">
+            <button class="pill" data-value="under500">Under $500</button>
+            <button class="pill" data-value="500-1k">$500 to $1K</button>
+            <button class="pill" data-value="1k-5k">$1K to $5K</button>
+            <button class="pill" data-value="5k-25k">$5K to $25K</button>
+            <button class="pill" data-value="25k-plus">$25K or more</button>
+            <button class="pill" data-value="varies">Varies, undisclosed</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-item" data-group="geo">
+        <button class="menu-trigger" type="button">Geography <span class="count">0</span><span class="chev">&#9662;</span></button>
+        <div class="dropdown-panel">
+          <div class="dropdown-row" data-group="geo">
+            <button class="pill" data-value="iowa-statewide">Iowa statewide</button>
+            <button class="pill" data-value="national">National</button>
+            <button class="pill" data-value="university-of-iowa">University of Iowa</button>
+            <button class="pill" data-value="johnson-county">Johnson County</button>
+            <button class="pill" data-value="eastern-iowa">Eastern Iowa</button>
+            <button class="pill" data-value="cedar-valley">Cedar Valley</button>
+            <button class="pill" data-value="bremer-county">Bremer County</button>
+            <button class="pill" data-value="multistate">Iowa / Nebraska / South Dakota</button>
+            <button class="pill" data-value="alliant-territory">Alliant territory</button>
+            <button class="pill" data-value="davenport">Davenport</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-item" data-group="eligibility">
+        <button class="menu-trigger" type="button">Eligibility <span class="count">0</span><span class="chev">&#9662;</span></button>
+        <div class="dropdown-panel">
+          <div class="dropdown-row" data-group="eligibility">
+            <button class="pill" data-value="tsa-member">TSA member</button>
+            <button class="pill" data-value="ui-student">University of Iowa student</button>
+            <button class="pill" data-value="iowa-resident">Iowa resident</button>
+            <button class="pill" data-value="first-generation">First-generation student</button>
+            <button class="pill" data-value="women-in-stem">Women in STEM</button>
+            <button class="pill" data-value="county-resident">County resident</button>
+            <button class="pill" data-value="general-public">Open to all</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="menu-item" data-group="event">
+        <button class="menu-trigger" type="button">TSA Event <span class="count">0</span><span class="chev">&#9662;</span></button>
+        <div class="dropdown-panel">
+          <div class="dropdown-row" data-group="event">
+            <button class="pill" data-value="chapter-team">Chapter Team</button>
+            <button class="pill" data-value="technology-bowl">Technology Bowl</button>
+            <button class="pill" data-value="technology-problem-solving">Technology Problem Solving</button>
+            <button class="pill" data-value="prepared-presentation">Prepared Presentation</button>
+            <button class="pill" data-value="extemporaneous-speech">Extemporaneous Speech</button>
+            <button class="pill" data-value="robotics">Robotics</button>
+            <button class="pill" data-value="software-development">Software Development</button>
+            <button class="pill" data-value="engineering-design">Engineering Design</button>
+            <button class="pill" data-value="structural-design-engineering">Structural Design and Engineering</button>
+            <button class="pill" data-value="architectural-design">Architectural Design</button>
+            <button class="pill" data-value="transportation-modeling">Transportation Modeling</button>
+            <button class="pill" data-value="biotechnology-design">Biotechnology Design</button>
+            <button class="pill" data-value="data-science-analytics">Data Science and Analytics</button>
+            <button class="pill" data-value="webmaster">Webmaster</button>
+            <button class="pill" data-value="video-game-design">Video Game Design</button>
+            <button class="pill" data-value="system-control-technology">System Control Technology</button>
+            <button class="pill" data-value="manufacturing-prototype">Manufacturing Prototype</button>
+            <button class="pill" data-value="drone-challenge">Drone Challenge</button>
+            <button class="pill" data-value="geospatial-technology">Geospatial Technology</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="clear-btn" id="clearFiltersSch" type="button">Clear all filters</button>
+      <div class="results-note" id="resultsNoteSch"></div>
+    </div>
+  </nav>
+
+  <main class="catalog">
+    <div class="wrap">
+
+      <h2 class="tier-heading">Tier 1 <span class="tsub">County, local, and regional scholarships</span></h2>
+      <div class="grid" id="schTier1"></div>
+
+      <h2 class="tier-heading">Tier 2 <span class="tsub">Iowa statewide, university, and multi-county programs</span></h2>
+      <div class="grid" id="schTier2"></div>
+
+      <h2 class="tier-heading">Tier 3 <span class="tsub">National and TSA-specific scholarships</span></h2>
+      <div class="grid" id="schTier3"></div>
+
+      <div class="empty-note" id="emptyNoteSch">No scholarships match the filters you've selected. Try clearing a filter or two.</div>
+
+    </div>
+  </main>
+
+</div>
 
 <footer>
   <div class="wrap">
-    Built for Iowa TSA chapter advisors. Verify current deadlines and award amounts before applying, since grant programs change from year to year.
+    Built for Iowa TSA chapter advisors and students. Verify current deadlines, eligibility, and award amounts before applying, since grant and scholarship programs change from year to year.
   </div>
 </footer>
 
 <script>
+/* ========================================================================
+   GRANTS DATA
+   ======================================================================== */
 const grants = [
   {
     tier:1, name:"Iowa TSA New Chapter Start-Up Grant", amount:"$500",
@@ -715,7 +991,328 @@ const grants = [
   }
 ];
 
-function cardHTML(g){
+/* ========================================================================
+   SCHOLARSHIPS DATA
+   ======================================================================== */
+const scholarships = [
+  {
+    tier:3, name:"William P. Elrod Memorial Scholarship", amount:"$2,500",
+    for:"National TSA scholarship honoring TSA founder William P. Elrod, for a TSA student member with strong service and conference involvement.",
+    looking:"At least one year of TSA service at the local, state, or national level, attendance at a TSA state or national conference, a 3.0+ GPA, and three references.",
+    note:"Applications open through the password-protected TSA Student Member Site. Deadline is May 1 each year.",
+    link:"https://tsaweb.org/programs/awards-and-scholarships",
+    tags:{amount:"1k-5k", geo:["national"], eligibility:"tsa-member", event:["chapter-team","technology-bowl","technology-problem-solving","prepared-presentation"]}
+  },
+  {
+    tier:3, name:"NTHS + TSA Academic Scholarship", amount:"$1,000",
+    for:"Scholarship partnership between TSA and the National Technical Honor Society for students who hold dual membership in both organizations.",
+    looking:"Current TSA and NTHS membership, plus nomination by your school's NTHS chapter advisor.",
+    note:"No NTHS chapter at your school yet? The nomination has to come through one, so check the NTHS chapter directory first.",
+    link:"https://tsaweb.org/programs/awards-and-scholarships",
+    tags:{amount:"500-1k", geo:["national"], eligibility:"tsa-member", event:["chapter-team","technology-bowl","prepared-presentation"]}
+  },
+  {
+    tier:3, name:"National TSA Alumni Scholarship", amount:"$1,000",
+    for:"Awarded annually to a TSA alumnus or alumna, distributed directly to the recipient's college or university financial aid office.",
+    looking:"TSA alumni status and a completed application through TSA's official alumni scholarship form.",
+    note:"Application form is posted directly on TSA's Awards and Scholarships page, no current student membership required.",
+    link:"https://tsaweb.org/programs/awards-and-scholarships",
+    tags:{amount:"500-1k", geo:["national"], eligibility:"tsa-member", event:["chapter-team","technology-bowl","technology-problem-solving"]}
+  },
+  {
+    tier:1, name:"Iowa Engineering Society Chapter Scholarship Finder", amount:"$250 to $500",
+    for:"A statewide network of geographically based engineering scholarships run by individual IES county chapters.",
+    looking:"Iowa high school senior pursuing engineering, with eligibility set by whichever IES chapter covers your school's county.",
+    note:"Not every chapter offers a scholarship every year. Application periods usually run September through December and vary by chapter.",
+    link:"https://www.iaengr.org/scholarships",
+    tags:{amount:"under500", geo:["iowa-statewide"], eligibility:"iowa-resident", event:["architectural-design","structural-design-engineering","transportation-modeling","robotics"]}
+  },
+  {
+    tier:1, name:"Iowa-Illinois IEEE Section Scholarship", amount:"$2,000",
+    for:"IEEE scholarship connected to the Quad Cities engineering community, awarded to one graduating senior each year.",
+    looking:"High school senior pursuing electrical engineering or a related technology field.",
+    note:"One award a year, the 2026 recipient was a Pleasant Valley High School senior headed to Iowa State for electrical engineering.",
+    link:"https://r4.ieee.org/iail/",
+    tags:{amount:"1k-5k", geo:["eastern-iowa"], eligibility:"iowa-resident", event:["robotics","software-development","technology-problem-solving","system-control-technology"]}
+  },
+  {
+    tier:1, name:"Cedar Valley SWE Scholarship", amount:"$500 to $1,000",
+    for:"Regional Society of Women Engineers scholarship supporting women entering STEM from six northeast Iowa counties.",
+    looking:"Female high school senior living in Black Hawk, Buchanan, Bremer, Butler, Chickasaw, or Grundy County, 3.0+ unweighted GPA, entering an ABET-accredited STEM degree program.",
+    note:"Deadline runs around May 1 each cycle, award count and amount depend on that year's corporate and member support.",
+    link:"https://cedarvalley.swe.org/scholarships/",
+    tags:{amount:"500-1k", geo:["cedar-valley"], eligibility:"women-in-stem", event:["architectural-design","robotics","structural-design-engineering","software-development"]}
+  },
+  {
+    tier:2, name:"Ann Rehan Goebel Foundation STEM Scholarship", amount:"$1,000 per year, up to $4,000",
+    for:"Holistic STEM scholarship for Iowa, Nebraska, and South Dakota residents, weighted heavily toward the personal statement rather than GPA.",
+    looking:"Iowa, Nebraska, or South Dakota resident, accepted to a two- or four-year STEM program. No minimum GPA required.",
+    note:"Small annual award pool, a very young foundation now in only its second cycle. Deadline is March 1.",
+    link:"https://www.argfoundation.org/scholarships",
+    tags:{amount:"1k-5k", geo:["multistate"], eligibility:"iowa-resident", event:["biotechnology-design","data-science-analytics","software-development","robotics"]}
+  },
+  {
+    tier:2, name:"Alliant Energy Innovation Scholarship", amount:"$1,000, up to 25 annually",
+    for:"Utility-sponsored scholarship rewarding a STEM solution to a real community problem, a strong fit since the application explicitly asks students to apply STEM to civic issues.",
+    looking:"High school senior pursuing STEM or a skilled trade, dependent of or customer of an Alliant Energy utility subsidiary, 2.5+ GPA, 350-word essay.",
+    note:"Applications run December 2 through February 3.",
+    link:"https://www.alliantenergy.com/foundation/scholarships",
+    tags:{amount:"500-1k", geo:["alliant-territory"], eligibility:"iowa-resident", event:["technology-problem-solving","robotics","engineering-design","software-development"]}
+  },
+  {
+    tier:2, name:"Aureon ITC Scholarship Program", amount:"$10,000 total across six awards",
+    for:"Scholarship for rural Iowa students served by an Iowa Independent Telecommunications Company, pursuing a STEM-related field.",
+    looking:"Reside in a home served by an Iowa ITC, 3.33+ GPA, accepted to an Iowa college, university, community college, or vocational-technical school.",
+    note:"Six awards total: one $3,000, two $2,000, and three $1,000. Deadline is March 1.",
+    link:"https://aureon.com/about/aureon-scholarship-programs/",
+    tags:{amount:"varies", geo:["iowa-statewide"], eligibility:"iowa-resident", event:["software-development","webmaster","data-science-analytics","robotics"]}
+  },
+  {
+    tier:2, name:"Aureon Scholarship for Technology Students", amount:"$5,000 total across multiple awards",
+    for:"Scholarship for students in Aureon's urban and metro service areas pursuing a technology-focused degree.",
+    looking:"Iowa junior or senior, 3.0+ GPA, accepted to an Iowa college, university, community college, or vocational-technical school in a technology-related field.",
+    note:"Recent cycles have split this into a handful of $1,000 to $1,500 awards. Deadline is March 1.",
+    link:"https://aureon.com/about/aureon-scholarship-programs/",
+    tags:{amount:"varies", geo:["iowa-statewide"], eligibility:"iowa-resident", event:["software-development","webmaster","data-science-analytics","technology-bowl"]}
+  },
+  {
+    tier:1, name:"William and Patricia Buss STEM Scholarship", amount:"$1,000",
+    for:"Local STEM scholarship for Denver High School seniors, where TSA leadership and project work can strengthen the application.",
+    looking:"Denver High School senior, STEM major, 2.5+ GPA, preference for community service and strong character.",
+    note:"Restricted to a single high school, apply through your school's local scholarship process. Deadline runs in February.",
+    link:"",
+    tags:{amount:"500-1k", geo:["bremer-county"], eligibility:"county-resident", event:["robotics","architectural-design","software-development","biotechnology-design"]}
+  },
+  {
+    tier:2, name:"Robert D. Blue Scholarship", amount:"$500 to $1,000, varies",
+    for:"Statewide Iowa scholarship emphasizing citizenship, academic ability, and community contribution.",
+    looking:"Iowa resident attending or planning to attend an Iowa college or university, 500-word essay, two letters of recommendation. Financial need is considered.",
+    note:"Award count and amount vary year to year based on foundation earnings. Deadline is May 31.",
+    link:"https://www.rdblue.org/",
+    tags:{amount:"500-1k", geo:["iowa-statewide"], eligibility:"iowa-resident", event:["chapter-team","prepared-presentation","extemporaneous-speech","technology-bowl"]}
+  },
+  {
+    tier:2, name:"All Iowa Opportunity Scholarship", amount:"Up to $5,334 (2025-26 figure)",
+    for:"Large state-funded, need-based scholarship for Iowa residents attending an eligible Iowa college or university.",
+    looking:"Iowa resident, first-time college freshman, FAFSA and Iowa Financial Aid Application filed by April 1, an eligible Student Aid Index. Priority to foster-care students, children of deceased public safety workers, and TRIO or GEAR UP participants.",
+    note:"Not STEM-specific, but a strong option for any TSA student who meets Iowa's priority criteria. The max award has climbed gradually in recent years, confirm the current-year figure before promising it.",
+    link:"https://educate.iowa.gov/higher-ed/financial-aid/scholarships-grants/aios",
+    tags:{amount:"5k-25k", geo:["iowa-statewide"], eligibility:"iowa-resident", event:["chapter-team","technology-bowl","technology-problem-solving"]}
+  },
+  {
+    tier:2, name:"ISL Education Lending Scholarship", amount:"45 awards of $1,000 each",
+    for:"Random-drawing scholarship open to Iowa high schoolers (grade 9 and up), college students, and their parents or guardians, paid into an ISave 529 account.",
+    looking:"Iowa resident, simple online registration. No essay, no GPA requirement, no TSA connection needed.",
+    note:"Not merit-based, this is a pure random drawing, but one of the easiest entries on this list. Two registration cycles a year, roughly fall (through early December) and spring (through late March or early April).",
+    link:"https://www.iowastudentloan.org/scholarships/",
+    tags:{amount:"500-1k", geo:["iowa-statewide"], eligibility:"iowa-resident", event:["chapter-team","technology-bowl","technology-problem-solving","prepared-presentation","robotics","software-development","engineering-design","biotechnology-design"]}
+  },
+  {
+    tier:3, name:"To the Stars STEM Scholarship", amount:"$1,000 plus mentorship",
+    for:"A national scholarship and mentorship program for first-generation STEM students, founded by an Iowa native now working at Los Alamos National Laboratory.",
+    looking:"High school senior, first in your family to pursue STEM, 3.0+ GPA, evidence of an extracurricular, leadership role, job, or family responsibility.",
+    note:"This is a national program, not Iowa-restricted, recent winners have come from states well outside Iowa. Deadline is March 27.",
+    link:"https://www.tothestarsscholarship.org/home",
+    tags:{amount:"1k-5k", geo:["national"], eligibility:"first-generation", event:["biotechnology-design","robotics","software-development","engineering-design"]}
+  },
+  {
+    tier:3, name:"Regeneron Science Talent Search", amount:"$2,000 to $250,000",
+    for:"The most prestigious national science research competition for high school seniors, built around an original independent research project.",
+    looking:"A completed research report, letters of recommendation, transcripts, and a full application built around genuine, independent scientific research.",
+    note:"Extremely competitive, treat this as a reach opportunity for a student with a serious research project already underway. Deadline is November 5.",
+    link:"https://sciencetalentsearch.smapply.org/prog/regeneron_science_talent_search_2027/",
+    tags:{amount:"varies", geo:["national"], eligibility:"general-public", event:["biotechnology-design","data-science-analytics","software-development","engineering-design"]}
+  },
+  {
+    tier:3, name:"AES Engineering Scholarship", amount:"$500",
+    for:"A low-barrier national scholarship judged entirely on a single reflective essay, not GPA or major.",
+    looking:"A 500 to 1,000 word essay on what would make your life feel successful in 30 years. No major restriction, no application fee.",
+    note:"One of the easiest applications on this list: no transcript, no fee, essay only. Deadline is October 8.",
+    link:"https://www.aesengineers.com/scholarships.php",
+    tags:{amount:"under500", geo:["national"], eligibility:"general-public", event:["chapter-team","technology-problem-solving","engineering-design"]}
+  },
+  {
+    tier:2, name:"University of Iowa College of Engineering Scholarships", amount:"Varies, 150+ donor funds",
+    for:"A single scholarship application that puts admitted UI engineering students into consideration for over 150 donor-funded scholarships at once.",
+    looking:"Admission to the University of Iowa College of Engineering, then one scholarship application through the UI Scholarship Portal.",
+    note:"Priority FAFSA deadline is December 1, scholarship application deadline is January 2.",
+    link:"https://engineering.uiowa.edu/future-students/future-undergraduate-students/engineering-scholarships",
+    tags:{amount:"varies", geo:["university-of-iowa"], eligibility:"ui-student", event:["engineering-design","robotics","structural-design-engineering","architectural-design"]}
+  },
+  {
+    tier:2, name:"University of Iowa Computer Science Scholarship Program", amount:"$2,000 to $11,000 depending on the fund",
+    for:"A family of departmental CS scholarships (Weeg, Sprang, Collins, Weber, Principal Scholars, Vetrivel, and more) awarded through one CS Department application.",
+    looking:"Declared CS, Informatics, Computer Science and Engineering, or Data Science major at UI. Individual funds add their own GPA, class-standing, or need criteria.",
+    note:"Several individual funds under this umbrella are listed separately below. Deadlines fall in spring, generally April or May.",
+    link:"https://cs.uiowa.edu/undergraduate/scholarships",
+    tags:{amount:"1k-5k", geo:["university-of-iowa"], eligibility:"ui-student", event:["software-development","webmaster","data-science-analytics","video-game-design"]}
+  },
+  {
+    tier:2, name:"IowaBio Future Biotech Leaders Scholarship", amount:"$2,000 in-state / $1,000 out-of-state",
+    for:"Scholarship for Iowa high schoolers who participate in the State Science and Technology Fair of Iowa with a biotechnology-relevant project.",
+    looking:"Iowa high school junior or senior participating in SSTFI, application includes research project information.",
+    note:"IowaBio has awarded 100+ scholarships since 2000, several winners are typically chosen each year, announced each spring at SSTFI.",
+    link:"https://www.iowabio.org/studentscholarships/",
+    tags:{amount:"1k-5k", geo:["iowa-statewide"], eligibility:"iowa-resident", event:["biotechnology-design","data-science-analytics","engineering-design"]}
+  },
+  {
+    tier:2, name:"John Deere Scholars Program", amount:"Covers 90% of cost of attendance for four years",
+    for:"A $6.6M, six-year pipeline between the John Deere Foundation, the University of Iowa, and Davenport Community School District, covering most of the cost of a UI degree for 20 Davenport seniors a year.",
+    looking:"Davenport Community School District senior, demonstrated financial need, participation in the program's college-readiness courses, FAFSA, essay, two recommendations, and an interview.",
+    note:"Not a per-student cash award, it covers 90% of the total cost of attendance, with the remaining 10% coming from work-study and other aid. Restricted to Davenport schools, not open statewide.",
+    link:"https://provost.uiowa.edu/johndeerescholars",
+    tags:{amount:"25k-plus", geo:["davenport"], eligibility:"county-resident", event:["robotics","transportation-modeling","engineering-design","technology-problem-solving"]}
+  },
+  {
+    tier:2, name:"IAMU Utility-Focused Scholarship", amount:"$2,000",
+    for:"Scholarship for students pursuing a utility-related post-secondary program, from Iowa's statewide network of municipal utilities.",
+    looking:"Live in or attend a high school served by an IAMU member utility, attending a post-high-school program located in Iowa. Preference for utility trades such as electric line work or water treatment.",
+    note:"Deadline is February 28, results announced by late April.",
+    link:"https://members.iamu.org/page/scholarship_program",
+    tags:{amount:"1k-5k", geo:["iowa-statewide"], eligibility:"iowa-resident", event:["system-control-technology","technology-problem-solving","robotics","structural-design-engineering"]}
+  },
+  {
+    tier:2, name:"IAMU General Scholarship", amount:"$500",
+    for:"General scholarship for children or grandchildren of IAMU member utility employees, no utility-related major required.",
+    looking:"Parent, grandparent, or legal guardian employed by a verified IAMU member, 3.0+ GPA, attending an Iowa college or technical school.",
+    note:"Deadline is February 28, results announced by late April.",
+    link:"https://members.iamu.org/page/scholarship_program",
+    tags:{amount:"under500", geo:["iowa-statewide"], eligibility:"iowa-resident", event:["technology-bowl","chapter-team","technology-problem-solving"]}
+  },
+  {
+    tier:2, name:"Elevate Iowa Advanced Manufacturing Scholarship", amount:"$500, 15 awards",
+    for:"Scholarship connecting technical competition experience directly to a manufacturing career, one award per Iowa community college region.",
+    looking:"Iowa high school senior attending one of Iowa's 15 community colleges for an advanced manufacturing field such as welding, CNC machining, industrial automation, robotics, or tool and die.",
+    note:"Deadline is March 29 each year.",
+    link:"https://www.iowaabi.org/elevate-iowa/elevate-scholarship-program/",
+    tags:{amount:"under500", geo:["iowa-statewide"], eligibility:"iowa-resident", event:["robotics","manufacturing-prototype","technology-problem-solving","transportation-modeling"]}
+  },
+  {
+    tier:2, name:"Conservation Districts of Iowa Conservation Scholarship", amount:"$500 to $3,000",
+    for:"Statewide conservation and agriculture scholarship run through Iowa's county Soil and Water Conservation Districts, a strong match for drone, geospatial, and ag-tech students.",
+    looking:"Iowa senior pursuing any field of conservation or agriculture, application filed through your county SWCD office.",
+    note:"Top three state-level awards are $3,000, $2,000, and $1,000, with six additional $500 regional awards. Deadline typically falls in early February.",
+    link:"https://cdiowa.org/get-involved/scholarships/",
+    tags:{amount:"varies", geo:["iowa-statewide"], eligibility:"iowa-resident", event:["drone-challenge","geospatial-technology","engineering-design","data-science-analytics"]}
+  },
+  {
+    tier:1, name:"Ada Woo and William Ching Endowed Scholarship", amount:"$2,000",
+    for:"One-time award for first-generation college students in Johnson County pursuing a STEM field, including an essay on the funds' impact.",
+    looking:"Senior at a Johnson County public high school, 3.5+ GPA, first-generation college student, planning to major in STEM.",
+    note:"Deadline is February 28, applications go through the Community Foundation of Johnson County.",
+    link:"https://cfjc.org/scholarships/",
+    tags:{amount:"1k-5k", geo:["johnson-county"], eligibility:"first-generation", event:["biotechnology-design","robotics","software-development","engineering-design"]}
+  },
+  {
+    tier:1, name:"Svatos Engineering Endowed Scholarship", amount:"$1,000",
+    for:"Local engineering scholarship for Johnson County seniors, essay-based on interest in and barriers to becoming an engineer.",
+    looking:"Senior at a Johnson County public high school, planning to major in engineering. No minimum GPA required.",
+    note:"One award. Deadline is February 28, applications go through the Community Foundation of Johnson County.",
+    link:"https://cfjc.org/scholarships/",
+    tags:{amount:"500-1k", geo:["johnson-county"], eligibility:"iowa-resident", event:["engineering-design","structural-design-engineering","architectural-design","robotics"]}
+  },
+  {
+    tier:1, name:"Greater Iowa City Area Student Scholarship", amount:"$2,500",
+    for:"Broad local scholarship for Iowa City Community School District seniors, deliberately including trade school and certification pathways.",
+    looking:"High school senior in the Iowa City Community School District, pursuing college, trade school, or certification.",
+    note:"Multiple awards available. Deadline is February 28, applications go through the Community Foundation of Johnson County.",
+    link:"https://cfjc.org/scholarships/",
+    tags:{amount:"1k-5k", geo:["johnson-county"], eligibility:"iowa-resident", event:["technology-problem-solving","robotics","manufacturing-prototype","technology-bowl"]}
+  },
+  {
+    tier:1, name:"Niles Schreiber Endowed Scholarship", amount:"$2,000",
+    for:"Local scholarship for Southeast Warren or Clear Creek Amana seniors continuing their education via community college, trade school, or public-service program.",
+    looking:"Senior at Southeast Warren High School or Clear Creek Amana High School, 2.0 to 3.5 GPA, financial essay and personal essay.",
+    note:"Multiple awards. Deadline is February 28, applications go through the Community Foundation of Johnson County.",
+    link:"https://cfjc.org/scholarships/",
+    tags:{amount:"1k-5k", geo:["johnson-county"], eligibility:"county-resident", event:["technology-problem-solving","manufacturing-prototype","robotics","chapter-team"]}
+  },
+  {
+    tier:1, name:"Abner Masonic Lodge Endowed Scholarship", amount:"$1,000",
+    for:"Local scholarship for Lone Tree seniors who are leaders in their school or community, essay on leadership and service.",
+    looking:"Senior at Lone Tree Public High School, planning to attend a two- or four-year college, skilled trade, or certificate program.",
+    note:"Deadline is February 28, applications go through the Community Foundation of Johnson County.",
+    link:"https://cfjc.org/scholarships/",
+    tags:{amount:"500-1k", geo:["johnson-county"], eligibility:"county-resident", event:["chapter-team","technology-problem-solving","manufacturing-prototype","robotics"]}
+  },
+  {
+    tier:1, name:"Iowa Engineering Society Regional Chapter Scholarships", amount:"$250 to $500",
+    for:"IES chapter scholarships for a defined multi-county region of central Iowa, awarded to seniors pursuing engineering.",
+    looking:"Iowa high school senior in an eligible central Iowa county pursuing engineering.",
+    note:"Chapter scholarship, not guaranteed every year. Deadline runs in March.",
+    link:"https://www.iaengr.org/central-iowa-chapter",
+    tags:{amount:"under500", geo:["iowa-statewide"], eligibility:"iowa-resident", event:["architectural-design","engineering-design","structural-design-engineering","robotics","transportation-modeling"]}
+  },
+  {
+    tier:1, name:"ISACA Illowa Technology Audit Scholarship", amount:"$1,000",
+    for:"ISACA chapter scholarship for students pursuing information systems, computer science, cybersecurity, or data science in the Eastern Iowa or Western Illinois region.",
+    looking:"Enrolled at an accredited school in the Eastern Iowa or Western Illinois region, 3.25+ GPA, one letter of recommendation.",
+    note:"Two to three awards a year depending on funding. Deadline typically falls in November.",
+    link:"https://isaca.secure-platform.com/a/page/ISACAfoundation/usscholarships/illowa",
+    tags:{amount:"500-1k", geo:["eastern-iowa"], eligibility:"iowa-resident", event:["software-development","data-science-analytics","webmaster","technology-bowl"]}
+  },
+  {
+    tier:2, name:"Arthur A. Collins Scholarship", amount:"$5,000, two awards",
+    for:"High-value UI computer science scholarship with a strong technology-industry alignment, tied to Collins Aerospace.",
+    looking:"UI Computer Science undergraduate, sophomore standing or above, or graduate student. Academic achievement, leadership, and integrity considered.",
+    note:"Two awards a year. Applied through the CS Department's single scholarship application.",
+    link:"https://cs.uiowa.edu/undergraduate/scholarships",
+    tags:{amount:"5k-25k", geo:["university-of-iowa"], eligibility:"ui-student", event:["software-development","robotics","webmaster","data-science-analytics"]}
+  },
+  {
+    tier:2, name:"Jason and Leslie Weber Emerging Technologies Scholarship", amount:"Approximately $5,000",
+    for:"UI computer science scholarship for students with demonstrated interest in emerging technology such as AI and quantum computing.",
+    looking:"UI computer science or computer engineering student with demonstrated technical aptitude in emerging technologies.",
+    note:"Applied through the CS Department's single scholarship application.",
+    link:"https://cs.uiowa.edu/undergraduate/scholarships",
+    tags:{amount:"1k-5k", geo:["university-of-iowa"], eligibility:"ui-student", event:["software-development","data-science-analytics","robotics","technology-problem-solving"]}
+  },
+  {
+    tier:2, name:"Jason and Leslie Weber Women in Computer Science Scholarship", amount:"$5,000",
+    for:"UI computer science scholarship rewarding women who show initiative through projects beyond coursework.",
+    looking:"Female UI computer science student, 3.0+ GPA, demonstrated initiative outside the classroom.",
+    note:"One award a year. Applied through the CS Department's single scholarship application.",
+    link:"https://cs.uiowa.edu/undergraduate/scholarships",
+    tags:{amount:"1k-5k", geo:["university-of-iowa"], eligibility:"women-in-stem", event:["software-development","webmaster","data-science-analytics","robotics"]}
+  },
+  {
+    tier:2, name:"Vetrivel Family Scholarship", amount:"Up to full cost of attendance (roughly $11,000 recently)",
+    for:"New, high-value UI computer science fund established by a UI CS alum and tech entrepreneur.",
+    looking:"UI Computer Science Department major, merit and good standing, with individual-award preference for financial need and women in CS.",
+    note:"A new fund with a limited recipient pool. Applied through the CS Department's single scholarship application.",
+    link:"https://cs.uiowa.edu/news/2026/03/generous-gift-alumtech-leader-seeds-new-cs-scholarship-fund",
+    tags:{amount:"5k-25k", geo:["university-of-iowa"], eligibility:"ui-student", event:["software-development","data-science-analytics","robotics","webmaster"]}
+  },
+  {
+    tier:2, name:"Principal Scholars Award", amount:"$3,000",
+    for:"UI computer science scholarship that explicitly weighs extracurricular leadership alongside grades.",
+    looking:"Current or admitted UI CS undergraduate, 2.8+ GPA, U.S. citizen or permanent resident. Considers career field, extracurriculars, and leadership.",
+    note:"Particularly strong for TSA students since leadership outside the classroom counts directly. Applied through the CS Department's single scholarship application.",
+    link:"https://cs.uiowa.edu/undergraduate/scholarships",
+    tags:{amount:"1k-5k", geo:["university-of-iowa"], eligibility:"ui-student", event:["software-development","webmaster","robotics","chapter-team"]}
+  },
+  {
+    tier:2, name:"David Sprang Scholarship", amount:"$2,000",
+    for:"Departmental UI computer science scholarship for students combining strong academics with outside activities.",
+    looking:"UI computer science undergraduate, academic achievement, and a well-rounded profile.",
+    note:"Applied through the CS Department's single scholarship application.",
+    link:"https://cs.uiowa.edu/undergraduate/scholarships",
+    tags:{amount:"1k-5k", geo:["university-of-iowa"], eligibility:"ui-student", event:["software-development","webmaster","data-science-analytics"]}
+  },
+  {
+    tier:2, name:"Gerard P. Weeg Scholarship", amount:"$3,000, two awards",
+    for:"Departmental UI computer science scholarship for students continuing their education at Iowa.",
+    looking:"UI CS undergraduate or graduate student, academic achievement.",
+    note:"Two awards a year. Applied through the CS Department's single scholarship application.",
+    link:"https://cs.uiowa.edu/undergraduate/scholarships",
+    tags:{amount:"1k-5k", geo:["university-of-iowa"], eligibility:"ui-student", event:["software-development","data-science-analytics","webmaster","technology-bowl"]}
+  }
+];
+
+/* ========================================================================
+   SHARED CARD + MARKETPLACE RENDERING
+   ======================================================================== */
+function grantCardHTML(g){
   const linkHTML = g.link
     ? `<a class="learn" href="${g.link}" target="_blank" rel="noopener">Learn more</a>`
     : `<span class="learn" style="border-color:#c9c9c3;color:#8a8d94;">Link not yet confirmed</span>`;
@@ -740,118 +1337,201 @@ function cardHTML(g){
   </article>`;
 }
 
-const t1 = document.getElementById('tier1');
-const t2 = document.getElementById('tier2');
-const t3 = document.getElementById('tier3');
-grants.forEach(g=>{
-  const html = cardHTML(g);
-  if(g.tier===1) t1.insertAdjacentHTML('beforeend', html);
-  if(g.tier===2) t2.insertAdjacentHTML('beforeend', html);
-  if(g.tier===3) t3.insertAdjacentHTML('beforeend', html);
-});
+function scholarshipCardHTML(s){
+  const linkHTML = s.link
+    ? `<a class="learn" href="${s.link}" target="_blank" rel="noopener">Learn more</a>`
+    : `<span class="learn" style="border-color:#c9c9c3;color:#8a8d94;">Link not yet confirmed</span>`;
+  const tagChips = [
+    ...s.tags.geo.map(x => x),
+    s.tags.eligibility
+  ].map(t => `<span>${t.replace(/-/g,' ')}</span>`).join('');
 
-const activeFilters = { tier:new Set(), amount:new Set(), geo:new Set(), applicant:new Set(), type:new Set() };
+  return `
+  <article class="card" data-tier="${s.tier}" data-amount="${s.tags.amount}" data-geo="${s.tags.geo.join(' ')}" data-eligibility="${s.tags.eligibility}" data-event="${s.tags.event.join(' ')}">
+    <div class="topline">
+      <span class="tier-badge">Tier ${s.tier}</span>
+      <span class="amount">${s.amount}</span>
+    </div>
+    <h3>${s.name}</h3>
+    <div class="field"><b>What it's for:</b> ${s.for}</div>
+    <div class="field"><b>What they're looking for:</b> ${s.looking}</div>
+    <div class="field"><b>Note:</b> ${s.note}</div>
+    <div class="tags">${tagChips}</div>
+    ${linkHTML}
+  </article>`;
+}
 
-/* --- Dropdown menu open/close --- */
-const menuItems = document.querySelectorAll('.menu-item');
-
-function closeAllMenus(except){
-  menuItems.forEach(item=>{
-    if(item !== except) item.classList.remove('open');
+function renderIntoTiers(items, cardFn, tierIds){
+  items.forEach(item=>{
+    const html = cardFn(item);
+    const targetId = tierIds[item.tier];
+    if(targetId) document.getElementById(targetId).insertAdjacentHTML('beforeend', html);
   });
 }
 
-menuItems.forEach(item=>{
-  const trigger = item.querySelector('.menu-trigger');
-  trigger.addEventListener('click', (e)=>{
-    e.stopPropagation();
-    const isOpen = item.classList.contains('open');
-    closeAllMenus();
-    if(!isOpen) item.classList.add('open');
+renderIntoTiers(grants, grantCardHTML, {1:'grantsTier1', 2:'grantsTier2', 3:'grantsTier3'});
+renderIntoTiers(scholarships, scholarshipCardHTML, {1:'schTier1', 2:'schTier2', 3:'schTier3'});
+
+/* Generic filter-menu + dropdown controller, shared by both marketplaces.
+   opts: { rootId, groups:[{key, multi}], clearBtnId, resultsNoteId, emptyNoteId, tierIds:[...], total, itemLabel } */
+function initMarketplace(opts){
+  const root = document.getElementById(opts.rootId);
+  const menuItems = root.querySelectorAll('.menu-item');
+  const activeFilters = {};
+  opts.groups.forEach(g => activeFilters[g.key] = new Set());
+
+  function closeAllMenus(){
+    menuItems.forEach(item => item.classList.remove('open'));
+  }
+
+  menuItems.forEach(item=>{
+    const trigger = item.querySelector('.menu-trigger');
+    trigger.addEventListener('click', (e)=>{
+      e.stopPropagation();
+      const isOpen = item.classList.contains('open');
+      closeAllMenus();
+      if(!isOpen) item.classList.add('open');
+    });
   });
-});
 
-document.addEventListener('click', ()=>{ closeAllMenus(); });
-document.querySelectorAll('.dropdown-panel').forEach(panel=>{
-  panel.addEventListener('click', (e)=> e.stopPropagation());
-});
-document.addEventListener('keydown', (e)=>{
-  if(e.key === 'Escape') closeAllMenus();
-});
+  root.querySelectorAll('.dropdown-panel').forEach(panel=>{
+    panel.addEventListener('click', (e)=> e.stopPropagation());
+  });
 
-/* --- Pill selection --- */
-document.querySelectorAll('.dropdown-row .pill').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const group = btn.parentElement.dataset.group;
-    const value = btn.dataset.value;
-    if(activeFilters[group].has(value)){
-      activeFilters[group].delete(value);
-      btn.classList.remove('active');
-    } else {
-      activeFilters[group].add(value);
-      btn.classList.add('active');
-    }
-    updateTriggerCounts();
+  document.addEventListener('click', ()=>{ closeAllMenus(); });
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Escape') closeAllMenus();
+  });
+
+  root.querySelectorAll('.dropdown-row .pill').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const group = btn.parentElement.dataset.group;
+      const value = btn.dataset.value;
+      if(activeFilters[group].has(value)){
+        activeFilters[group].delete(value);
+        btn.classList.remove('active');
+      } else {
+        activeFilters[group].add(value);
+        btn.classList.add('active');
+      }
+      updateCounts();
+      applyFilters();
+    });
+  });
+
+  document.getElementById(opts.clearBtnId).addEventListener('click', ()=>{
+    Object.keys(activeFilters).forEach(k => activeFilters[k].clear());
+    root.querySelectorAll('.dropdown-row .pill').forEach(b => b.classList.remove('active'));
+    updateCounts();
     applyFilters();
   });
-});
 
-document.getElementById('clearFilters').addEventListener('click', ()=>{
-  Object.keys(activeFilters).forEach(k=>activeFilters[k].clear());
-  document.querySelectorAll('.dropdown-row .pill').forEach(b=>b.classList.remove('active'));
-  updateTriggerCounts();
-  applyFilters();
-});
+  function updateCounts(){
+    menuItems.forEach(item=>{
+      const group = item.dataset.group;
+      const trigger = item.querySelector('.menu-trigger');
+      const countEl = trigger.querySelector('.count');
+      const n = activeFilters[group].size;
+      countEl.textContent = n;
+      trigger.classList.toggle('has-active', n > 0);
+    });
+  }
 
-function updateTriggerCounts(){
-  menuItems.forEach(item=>{
-    const group = item.dataset.group;
-    const trigger = item.querySelector('.menu-trigger');
-    const countEl = trigger.querySelector('.count');
-    const n = activeFilters[group].size;
-    countEl.textContent = n;
-    trigger.classList.toggle('has-active', n > 0);
-  });
+  function applyFilters(){
+    const cards = document.querySelectorAll('#' + opts.viewId + ' .card');
+    let shown = 0;
+    cards.forEach(card=>{
+      let visible = true;
+      opts.groups.forEach(g=>{
+        if(!activeFilters[g.key].size) return;
+        if(g.multi){
+          const vals = (card.dataset[g.key] || '').split(' ');
+          if(!vals.some(v => activeFilters[g.key].has(v))) visible = false;
+        } else {
+          if(!activeFilters[g.key].has(card.dataset[g.key])) visible = false;
+        }
+      });
+      card.classList.toggle('hidden', !visible);
+      if(visible) shown++;
+    });
+
+    const anyActive = Object.values(activeFilters).some(s => s.size);
+    document.getElementById(opts.resultsNoteId).textContent = anyActive
+      ? `Showing ${shown} of ${opts.total} ${opts.itemLabel}.`
+      : '';
+
+    opts.tierIds.forEach(id=>{
+      const grid = document.getElementById(id);
+      const heading = grid.previousElementSibling;
+      const visibleInTier = grid.querySelectorAll('.card:not(.hidden)').length;
+      const hasResults = visibleInTier > 0;
+      heading.style.display = hasResults ? '' : 'none';
+      grid.style.display = hasResults ? '' : 'none';
+    });
+    document.getElementById(opts.emptyNoteId).classList.toggle('show', shown === 0);
+  }
+
+  updateCounts();
 }
 
-function applyFilters(){
-  const cards = document.querySelectorAll('.card');
-  let shown = 0;
-  cards.forEach(card=>{
-    let visible = true;
-    if(activeFilters.tier.size && !activeFilters.tier.has(card.dataset.tier)) visible = false;
-    if(activeFilters.amount.size && !activeFilters.amount.has(card.dataset.amount)) visible = false;
-    if(activeFilters.applicant.size && !activeFilters.applicant.has(card.dataset.applicant)) visible = false;
-    if(activeFilters.type.size && !activeFilters.type.has(card.dataset.type)) visible = false;
-    if(activeFilters.geo.size){
-      const cardGeo = card.dataset.geo.split(' ');
-      const match = cardGeo.some(g => activeFilters.geo.has(g));
-      if(!match) visible = false;
-    }
-    card.classList.toggle('hidden', !visible);
-    if(visible) shown++;
-  });
-  const anyActive = Object.values(activeFilters).some(s=>s.size);
-  document.getElementById('resultsNote').textContent = anyActive
-    ? `Showing ${shown} of ${grants.length} grants.`
-    : '';
+initMarketplace({
+  rootId:'filterMenuGrants',
+  viewId:'view-grants',
+  groups:[
+    {key:'tier', multi:false},
+    {key:'amount', multi:false},
+    {key:'geo', multi:true},
+    {key:'applicant', multi:false},
+    {key:'type', multi:false}
+  ],
+  clearBtnId:'clearFiltersGrants',
+  resultsNoteId:'resultsNoteGrants',
+  emptyNoteId:'emptyNoteGrants',
+  tierIds:['grantsTier1','grantsTier2','grantsTier3'],
+  total:grants.length,
+  itemLabel:'grants'
+});
 
-  // Hide a tier's whole section heading when every card in it is filtered out,
-  // and show one empty-state message when nothing matches at all.
-  ['tier1','tier2','tier3'].forEach((id, i)=>{
-    const grid = document.getElementById(id);
-    const heading = grid.previousElementSibling;
-    const visibleInTier = grid.querySelectorAll('.card:not(.hidden)').length;
-    const tierHasResults = visibleInTier > 0;
-    heading.style.display = tierHasResults ? '' : 'none';
-    grid.style.display = tierHasResults ? '' : 'none';
+initMarketplace({
+  rootId:'filterMenuSch',
+  viewId:'view-scholarships',
+  groups:[
+    {key:'tier', multi:false},
+    {key:'amount', multi:false},
+    {key:'geo', multi:true},
+    {key:'eligibility', multi:false},
+    {key:'event', multi:true}
+  ],
+  clearBtnId:'clearFiltersSch',
+  resultsNoteId:'resultsNoteSch',
+  emptyNoteId:'emptyNoteSch',
+  tierIds:['schTier1','schTier2','schTier3'],
+  total:scholarships.length,
+  itemLabel:'scholarships'
+});
+
+/* ========================================================================
+   VIEW ROUTING (hash-based: #/, #/grants, #/scholarships)
+   ======================================================================== */
+const VIEW_BY_HASH = {
+  '/': 'view-home',
+  '': 'view-home',
+  '/grants': 'view-grants',
+  '/scholarships': 'view-scholarships'
+};
+
+function route(){
+  const hash = location.hash.replace(/^#/, '');
+  const targetId = VIEW_BY_HASH[hash] || 'view-home';
+  document.querySelectorAll('.view').forEach(v=>{
+    v.classList.toggle('hidden', v.id !== targetId);
   });
-  document.getElementById('emptyNote').classList.toggle('show', shown === 0);
+  window.scrollTo({top:0, behavior:'auto'});
 }
 
-updateTriggerCounts();
+window.addEventListener('hashchange', route);
+route();
 </script>
 
 </body>
 </html>
-
